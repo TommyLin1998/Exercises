@@ -12,24 +12,37 @@ class HeightConverter(wx.Frame):
 
         self.prompt = wx.StaticText(self.panel, label="Enter your height:", pos=(10, 10))
         
-        self.unit = wx.StaticText(self.panel, label="cm", pos=(235, 10))
+        self.unitFeet = wx.StaticText(self.panel, label="ft", pos=(235, 10))
+
+        self.unitInch = wx.StaticText(self.panel, label="in.", pos=(350, 10))
         
-        self.response = wx.StaticText(self.panel, pos=(10, 40))
+        self.response = wx.StaticText(self.panel, pos=(10, 55))
 
-        self.nameBox = wx.TextCtrl(self.panel, pos=(130, 10))
+        self.feetBox = wx.TextCtrl(self.panel, pos=(130, 10))
 
-        self.btnSubmit = wx.Button(self.panel, label="Submit", pos=(275, 8))
+        self.inchBox = wx.TextCtrl(self.panel, pos=(250, 10))
+
+        self.btnSubmit = wx.Button(self.panel, label="Submit", pos=(255, 50))
+        
 	self.btnSubmit.Bind(wx.EVT_BUTTON, self.OnSubmit)
 
 	self.Show()
 
     def OnSubmit(self, e):
-        name = self.nameBox.GetValue()
-        number = int(self.nameBox.GetValue())
-        inch = float(number/2.54)
-        feet = int(inch/12)
-        newInch = float(inch - 12 * feet)
-        self.response.SetLabel("Your height is {} ft and {} in.".format(feet, newInch))
+        
+        feet = self.feetBox.GetValue()
+        
+        feet = float(feet)
+        
+        inch = self.inchBox.GetValue()
+        
+        inch = float(inch)
+        
+        centimeter = float((12 * feet + inch) * 2.54)
+        
+        centimeter = round(centimeter, 2)
+        
+        self.response.SetLabel("Your height is {}cm".format(centimeter))
                     
 app = wx.App(False)
 

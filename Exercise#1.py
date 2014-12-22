@@ -26,6 +26,12 @@ class HeightConverter(wx.Frame):
         
 	self.btnSubmit.Bind(wx.EVT_BUTTON, self.OnSubmit)
 
+	self.cbRound = wx.CheckBox(self.panel, label="Round the answer", pos=(50, 100))
+
+	self.cbRound.Bind(wx.EVT_CHECKBOX, self.OnToggleRound)
+
+        self.cbRound.SetValue(False)
+        
 	self.Show()
 
     def OnSubmit(self, e):
@@ -40,10 +46,34 @@ class HeightConverter(wx.Frame):
         
         centimeter = float((12 * feet + inch) * 2.54)
         
-        centimeter = round(centimeter, 2)
-        
         self.response.SetLabel("Your height is {}cm".format(centimeter))
-                    
+
+        self.cbRound.Show(True)
+
+    def OnToggleRound(self, e):
+
+        isChecked = self.cbRound.GetValue()
+
+        feet = self.feetBox.GetValue()
+
+        feet = float(feet)
+
+        inch = self.inchBox.GetValue()
+
+        inch = float(inch)
+
+        centimeter = float((12 * feet + inch) * 2.54)
+
+        if isChecked:
+        
+            centimeter = round(centimeter, 1)
+
+            self.response.SetLabel("Your height is {}cm".format(centimeter))
+
+        else:
+
+            self.response.SetLabel("Your height is {}cm".format(centimeter))
+
 app = wx.App(False)
 
 frame = HeightConverter(None)

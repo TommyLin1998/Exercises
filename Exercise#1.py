@@ -16,7 +16,7 @@ class HeightConverter(wx.Frame):
 
         self.unitInch = wx.StaticText(self.panel, label="in.", pos=(350, 10))
         
-        self.response = wx.StaticText(self.panel, pos=(10, 55))
+        self.response = wx.StaticText(self.panel, pos=(10, 40))
 
         self.feetBox = wx.TextCtrl(self.panel, pos=(130, 10))
 
@@ -31,24 +31,34 @@ class HeightConverter(wx.Frame):
 	self.cbRound.Bind(wx.EVT_CHECKBOX, self.OnToggleRound)
 
         self.cbRound.SetValue(False)
+
+        self.cbMeter = wx.CheckBox(self.panel, label="Convert to meters", pos=(50, 70))
+
+        self.cbMeter.Bind(wx.EVT_CHECKBOX, self.OnToggleMeter)
+
+        self.cbRound.SetValue(False)
+
+        self.cbRound.Show(False)
+
+        self.cbMeter.Show(False)
         
 	self.Show()
 
     def OnSubmit(self, e):
-        
+
         feet = self.feetBox.GetValue()
-        
+
         feet = float(feet)
-        
+
         inch = self.inchBox.GetValue()
-        
+
         inch = float(inch)
-        
+
         centimeter = float((12 * feet + inch) * 2.54)
-        
+
         self.response.SetLabel("Your height is {}cm".format(centimeter))
 
-        self.cbRound.Show(True)
+        self.cbMeter.Show(True)
 
     def OnToggleRound(self, e):
 
@@ -64,15 +74,45 @@ class HeightConverter(wx.Frame):
 
         centimeter = float((12 * feet + inch) * 2.54)
 
+        meter = float(centimeter / 100)
+
         if isChecked:
         
-            centimeter = round(centimeter, 1)
+            meter = round(meter, 1)
 
-            self.response.SetLabel("Your height is {}cm".format(centimeter))
+            self.response.SetLabel("Your height is {}m".format(meter))
+
+        else:
+
+            self.response.SetLabel("Your height is {}m".format(meter))
+
+    def OnToggleMeter(self, e):
+
+        isChecked = self.cbMeter.GetValue()
+
+        feet = self.feetBox.GetValue()
+
+        feet = float(feet)
+
+        inch = self.inchBox.GetValue()
+
+        inch = float(inch)
+
+        centimeter = float((12 * feet + inch) * 2.54)
+
+        meter = float(centimeter / 100.0)
+
+        if isChecked:
+
+            self.response.SetLabel("Your height is {}m".format(meter))
+
+            self.cbRound.Show(True)
 
         else:
 
             self.response.SetLabel("Your height is {}cm".format(centimeter))
+
+            self.cbRound.Show(False)
 
 app = wx.App(False)
 
